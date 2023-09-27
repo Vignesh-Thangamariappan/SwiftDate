@@ -38,7 +38,7 @@ class TestDateInRegion_Compare: XCTestCase {
 		XCTAssert( ((DateInRegion() - 2.days).compare(.isToday) == false), "Failed to evaluate isToday == false")
 
 		// isTomorrow
-		XCTAssert( (DateInRegion() + 1.days + 5.minutes).compare(.isTomorrow), "Failed to evaluate isTomorrow")
+		XCTAssert((DateInRegion() + 1.days + 5.minutes).compare(.isTomorrow), "Failed to evaluate isTomorrow")
 		XCTAssert( (DateInRegion().dateAt(.endOfDay).compare(.isTomorrow) == false), "Failed to evaluate isTomorrow")
 
 		// isYesterday
@@ -90,8 +90,10 @@ class TestDateInRegion_Compare: XCTestCase {
 		XCTAssert( dateB1.compare(.isSameMonth(dateC1)) == false, "Failed to evaluate isSameMonth == false")
 
 		// prevWeek/nextWeek
-		XCTAssert( dateA1.dateAt(.prevWeek).toISO() == "2018-06-11T00:00:00+02:00", "Failed to evaluate prevWeek")
-		XCTAssert( dateA1.dateAt(.nextWeek).toISO() == "2018-06-25T00:00:00+02:00", "Failed to evaluate prevWeek")
+        let prevWeekDate = dateA1.dateAt(.prevWeek).toISO()
+		XCTAssert(prevWeekDate == "2018-06-11T00:00:00+02:00", "Failed to evaluate prevWeek")
+        let nextWeekDate = dateA1.dateAt(.nextWeek).toISO()
+		XCTAssert(nextWeekDate == "2018-06-25T00:00:00+02:00", "Failed to evaluate prevWeek")
 
 		// isThisYear
 		XCTAssert( DateInRegion().compare(.isThisYear), "Failed to evaluate isThisYear")
@@ -319,3 +321,4 @@ class TestDateInRegion_Compare: XCTestCase {
 	}
 
 }
+
