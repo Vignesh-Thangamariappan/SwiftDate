@@ -51,9 +51,11 @@ public struct Region: Decodable, Encodable, Equatable, Hashable, CustomStringCon
 			$0.timeZone = zone.toTimezone()
             let calendarToSet = calendar.toCalendar()
             $0.firstWeekday = calendarToSet.firstWeekday
-            if #available(iOS 16, *) {
+            if #available(iOS 17, *) {
                 var localeToSet = Locale.Components(locale: locale.toLocale())
-                localeToSet.firstDayOfWeek = Locale.Weekday(rawValue: calendarToSet.weekdaySymbols[calendarToSet.firstWeekday])
+                localeToSet.firstDayOfWeek = Locale.Weekday(
+                    rawValue: calendarToSet.weekdaySymbols[calendarToSet.firstWeekday]
+                )
                 $0.locale = Locale(components: localeToSet)
             } else {
                 $0.locale = locale.toLocale()
