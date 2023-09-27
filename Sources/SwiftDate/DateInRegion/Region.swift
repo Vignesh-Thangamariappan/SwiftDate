@@ -49,8 +49,16 @@ public struct Region: Decodable, Encodable, Equatable, Hashable, CustomStringCon
 				locale: LocaleConvertible = SwiftDate.defaultRegion.locale) {
 		self.calendar = Calendar.newCalendar(calendar, configure: {
 			$0.timeZone = zone.toTimezone()
-			$0.locale = locale.toLocale()
-			$0.firstWeekday = calendar.toCalendar().firstWeekday
+            let calendarToSet = calendar.toCalendar()
+            $0.firstWeekday = calendarToSet.firstWeekday
+            if #available(iOS 16, *) {
+                var localeToSet = Locale.Components(locale: locale.toLocale())
+                localeToSet.firstDayOfWeek = Locale.Weekday(rawValue: calendarToSet.weekdaySymbols[calendarToSet.firstWeekday])
+                $0.locale = Locale(components: localeToSet)
+            } else {
+                $0.locale = locale.toLocale()
+            }
+            
 			$0.minimumDaysInFirstWeek = calendar.toCalendar().minimumDaysInFirstWeek
 		})
 	}
