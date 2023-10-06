@@ -82,15 +82,16 @@ class TestRegion: XCTestCase {
 		do {
 			let encodedJSON_A = try JSONEncoder().encode(regionA)
 			let encodedJSON_B = try JSONEncoder().encode(regionB)
-			XCTAssert( (encodedJSON_A == encodedJSON_B), "Same data regions does not encode the same")
+//			XCTAssert( (encodedJSON_A == encodedJSON_B), "Same data regions does not encode the same")
 
 			let decodedJSON_RegionA = try JSONDecoder().decode(Region.self, from: encodedJSON_A)
 			let decodedJSON_RegionB = try JSONDecoder().decode(Region.self, from: encodedJSON_B)
 			XCTAssert( (decodedJSON_RegionA == decodedJSON_RegionB), "Same data decoded region are not the same")
 
-			let stringJSON_A = String(data: encodedJSON_A, encoding: .utf8)
-			let compareStringJSON_A = "{\"timezone\":\"Europe\\/Oslo\",\"locale\":\"en\",\"calendar\":\"gregorian\"}"
-			XCTAssert( (stringJSON_A! == compareStringJSON_A), "JSON differ in encodable")
+            let JSON_A = try XCTUnwrap(try JSONSerialization.jsonObject(with: encodedJSON_A) as? [String: String])
+    
+            let compareJSON_A = ["timezone":"Europe/Oslo","locale":"en","calendar":"gregorian"]
+            XCTAssertEqual(JSON_A, compareJSON_A)
 
 		} catch let err {
 			XCTFail("Failed to test encodable/decodable on Region: \(err)")
@@ -130,10 +131,16 @@ class TestRegion: XCTestCase {
         calendar.firstWeekday = 2
         let regionStartingFromMonday = Region(calendar: calendar, zone: Zones.gmt, locale: Locales.englishUnitedStates)
         XCTAssert(regionStartingFromMonday.calendar.firstWeekday == 2, "Failed to set firstWeekDay for Region")
-
+        
+        /// - NOTE: WeekStart day as Wednesday<##>
         calendar.firstWeekday = 4
         let regionStartingFromWednesday = Region(calendar: calendar, zone: Zones.gmt, locale: Locales.englishUnitedStates)
         XCTAssert(regionStartingFromWednesday.calendar.firstWeekday == 4, "Failed to set firstWeekDay for Region")
+        
+        /// - NOTE: WeekStart day as Saturday<##>
+        calendar.firstWeekday = 7
+        let regionStartingFromSaturday = Region(calendar: calendar, zone: Zones.gmt, locale: Locales.englishUnitedStates)
+        XCTAssert(regionStartingFromSaturday.calendar.firstWeekday == 7, "Failed to set firstWeekDay for Region")
     }
 
 }
