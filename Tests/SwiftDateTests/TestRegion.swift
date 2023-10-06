@@ -129,6 +129,10 @@ class TestRegion: XCTestCase {
         calendar.firstWeekday = 4
         let regionStartingFromWednesday = Region(calendar: calendar, zone: Zones.gmt, locale: Locales.englishUnitedStates)
         XCTAssert(regionStartingFromWednesday.calendar.firstWeekday == 4, "Failed to set firstWeekDay for Region")
+        
+        calendar.firstWeekday = 7
+        let regionStartingFromSaturday = Region(calendar: calendar, zone: Zones.gmt, locale: Locales.englishUnitedStates)
+        XCTAssert(regionStartingFromSaturday.calendar.firstWeekday == 7, "Failed to set firstWeekDay for Region")
     }
 
 }

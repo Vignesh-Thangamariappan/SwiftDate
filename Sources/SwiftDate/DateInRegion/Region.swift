@@ -54,7 +54,7 @@ public struct Region: Decodable, Encodable, Equatable, Hashable, CustomStringCon
             if #available(iOS 17, *) {
                 var localeToSet = Locale.Components(locale: locale.toLocale())
                 localeToSet.firstDayOfWeek = Locale.Weekday(
-                    rawValue: calendarToSet.weekdaySymbols[calendarToSet.firstWeekday]
+                    rawValue: calendarToSet.weekdaySymbols[calendarToSet.firstWeekday - 1]
                 )
                 $0.locale = Locale(components: localeToSet)
             } else {
